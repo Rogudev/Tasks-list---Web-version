@@ -1,0 +1,39 @@
+[
+    {
+        "title": "Alpha",
+        "finalized": true
+    },
+    {
+        "title": "Bravo",
+        "finalized": true
+    },
+    {
+        "title": "Charlie",
+        "finalized": false
+    },
+    {
+        "title": "Delta",
+        "finalized": false
+    },
+    {
+        "title": "Echo",
+        "finalized": true
+    },
+    {
+        "title": "Foxtrot",
+        "finalized": true
+    },
+    {
+        "title": "Golf",
+        "finalized": true
+    },
+    {
+        "title": "yy",
+        "finalized": false,
+        "id": 7
+    },
+    {
+        "title": "",
+        "finalized": false
+    }
+]
