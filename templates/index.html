@@ -36,17 +36,17 @@
                 <div class="col-6">
 
                     <div class="row">
-                        <form action="/add_project" method="POST">
-                            <div class="row">
-                                <h3 class="fs-3 text-center">Add task</h3>
-                            </div>
-                            <div class="mb-3">
-                                <input type="task" name="name" class="form-control" id="task_input"
-                                    placeholder="Task title">
-                            </div>
 
-                            <button type="submit" class="btn btn-primary">Add</button>
-                        </form>
+                        <div class="row">
+                            <h3 class="fs-3 text-center">Add task</h3>
+                        </div>
+                        <div class="mb-3">
+                            <input type="task" name="name" class="form-control" id="task_input"
+                                placeholder="Task title">
+                        </div>
+
+                        <button id="add_task-btn" type="submit" class="btn btn-primary">Add</button>
+
                     </div>
 
                     <div class="row my-4"></div>
@@ -72,9 +72,9 @@
                             {% if task.finalized %}
                             <strong>Done</strong>
                             {% else %}
-                            <a href="{{ url_for('finalize_task', id=loop.index0) }}">Mark as 'Done'</a>
+                            <a class="finalize-task" data-id="{{ loop.index0 }}" href="">Mark as 'Done'</a>
                             {% endif %}
-                            - <a href="{{ url_for('delete_task', id=loop.index0) }}">Delete</a>
+                            - <a class="rm-task" data-id="{{ loop.index0 }}" href="">Delete</a>
                         </li>
                         {% endfor %}
                     </ul>

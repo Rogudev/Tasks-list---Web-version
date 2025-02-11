@@ -33,27 +33,47 @@ def index():
 # Add a new project
 @app.route('/add_project', methods=['POST'])
 def agregar():
-    name = request.form.get('name')
+    # get the name from JSON
+    data = request.json
+    name = data.get('name')
+
+    # load list and append the new task
     tasks = load_tasks_list()
     tasks.append({'title': name, 'finalized': False})
+
+    # save list again
     save_tasks_list(tasks)
-    return redirect(url_for('index'))
+
+    return jsonify({"message": "Task added successfully", "status": 200})  # send response
 
 # Update a task as done, the id is for localizing the task in JSON
-@app.route('/finalize_task/<int:id>', methods=['GET'])
-def finalize_task(id):
+@app.route('/finalize_task', methods=['POST'])
+def finalize_task():
+    # get the id from JSON
+    data = request.json
+    task_id = data.get('id')
+
+    # load list and modify the task using the id
     tasks = load_tasks_list()
-    tasks[id]['finalized'] = True
+    tasks[task_id]['finalized'] = True
+
+    # save and return
     save_tasks_list(tasks)
-    return redirect(url_for('index'))
+    return jsonify({"message": "Task finalized correctly", "status": 200})  # send response
 
 # Delete a task
-@app.route('/delete_task/<int:id>', methods=['GET'])
-def delete_task(id):
+@app.route('/delete_task', methods=['POST'])
+def delete_task():
+    # get the id from JSON
+    data = request.json
+    task_id = data.get('id')
+
+    # drop task using index
     tasks = load_tasks_list()
-    tasks.pop(id)
+    tasks.pop(task_id)
+
     save_tasks_list(tasks)
-    return redirect(url_for('index'))
+    return jsonify({"message": "Task deleted correctly", "status": 200})  # send response
 
 # Function to run the Flask app
 def run_app():
