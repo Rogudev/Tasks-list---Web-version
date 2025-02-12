@@ -104,7 +104,7 @@ def shutdown():
 
 if __name__ == '__main__':
     # art the Flask app in a separate thread
-    thtreading.Thread(target=run_app).start()
+    threading.Thread(target=run_app).start()
 
     # open the browser after the app starts
     webbrowser.open(f'http://127.0.0.1:{app_port}')
