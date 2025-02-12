@@ -31,7 +31,7 @@ def index():
     return render_template('index.html', tasks=tasks)
 
 # Add a new project
-@app.route('/add_project', methods=['POST'])
+@app.route('/add_task', methods=['POST'])
 def agregar():
     # get the name from JSON
     data = request.json
@@ -103,8 +103,8 @@ def shutdown():
 
 
 if __name__ == '__main__':
-    # Start the Flask app in a separate thread
-    threading.Thread(target=run_app).start()
+    # art the Flask app in a separate thread
+    thtreading.Thread(target=run_app).start()
 
-    # Open the browser after the app starts
+    # open the browser after the app starts
     webbrowser.open(f'http://127.0.0.1:{app_port}')

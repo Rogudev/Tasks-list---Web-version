@@ -25,7 +25,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/add_project",
+            url: "/add_task",
             data: JSON.stringify({ name: taskName }),   //send as JSON
             contentType: "application/json; charset=utf-8",
             dataType: "json",
