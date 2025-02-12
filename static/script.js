@@ -63,6 +63,7 @@ $(document).ready(function () {
                 }
             }
         });
+        
     });
 
 
@@ -75,6 +76,30 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: "/delete_task",
+            data: JSON.stringify({ id: taskID }),  // Send the task ID as JSON
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response.status == 200) {
+                    location.reload();  
+                    
+                } else {
+                    alert("Server error");
+                }
+            }
+        });
+    });
+
+
+    // restart a task
+    $(document).on('click', '.restart-task', function (e) {
+        e.preventDefault();
+
+        const taskID = $(this).data('id');  // Get the task ID from the data-id attribute
+        
+        $.ajax({
+            type: "POST",
+            url: "/restart_task",
             data: JSON.stringify({ id: taskID }),  // Send the task ID as JSON
             contentType: "application/json; charset=utf-8",
             dataType: "json",

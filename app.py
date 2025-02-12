@@ -75,6 +75,21 @@ def delete_task():
     save_tasks_list(tasks)
     return jsonify({"message": "Task deleted correctly", "status": 200})  # send response
 
+# Delete a task
+@app.route('/restart_task', methods=['POST'])
+def restart_task():
+    # get the id from JSON
+    data = request.json
+    task_id = data.get('id')
+
+    # load list and modify the task using the id
+    tasks = load_tasks_list()
+    tasks[task_id]['finalized'] = False
+
+    # save and return
+    save_tasks_list(tasks)
+    return jsonify({"message": "Task restarted correctly", "status": 200})  # send response
+
 # Function to run the Flask app
 def run_app():
     app.run(debug=True, host='0.0.0.0', port=app_port, use_reloader=False)

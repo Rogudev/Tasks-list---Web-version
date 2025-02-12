@@ -17,47 +17,28 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- Custom js -->
     <script src="static/script.js"></script>
 </head>
 
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid my-5">
         <div class="container">
 
-            <div id="title_row" class="row my-5">
+            <div id="title_row" class="row">
                 <h1 class="fs-1 text-center">Tasks list</h1>
             </div>
 
+            <div class="row my-3"></div>
 
-            <div class="row">
 
-                <div class="col-6">
+            <div class="row row-gap-4 column-gap-5">
 
-                    <div class="row">
-
-                        <div class="row">
-                            <h3 class="fs-3 text-center">Add task</h3>
-                        </div>
-                        <div class="mb-3">
-                            <input type="task" name="name" class="form-control" id="task_input"
-                                placeholder="Task title">
-                        </div>
-
-                        <button id="add_task-btn" type="submit" class="btn btn-primary">Add</button>
-
-                    </div>
-
-                    <div class="row my-4"></div>
-
-                    <div class="row">
-                        <button id="shutdown-btn" class="btn btn-warning">Close app</button>
-                    </div>
-
-                </div>
-
-                <div class="col-6">
+                <div class="col-12 col-md-6">
 
                     <div class="row">
                         <div class="col-12">
@@ -65,19 +46,82 @@
                         </div>
                     </div>
 
-                    <ul>
-                        {% for task in tasks %}
-                        <li>
-                            {{ task.title }} -
-                            {% if task.finalized %}
-                            <strong>Done</strong>
-                            {% else %}
-                            <a class="finalize-task" data-id="{{ loop.index0 }}" href="">Mark as 'Done'</a>
-                            {% endif %}
-                            - <a class="rm-task" data-id="{{ loop.index0 }}" href="">Delete</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="row">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th class="ps-3">Done</th>
+                                    <th>Delete</th>
+                                    <th>Restart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in tasks %}
+                                <tr>
+                                    <th scope="row">{{ loop.index0 + 1}}</th>
+                                    <td>{{ task.title }}</td>
+
+                                    {% if task.finalized %}
+                                    <!-- done btn -->
+                                    <td class="ps-4">
+                                        <i class="bi bi-check2-square fs-4 text-success"></i>
+                                    </td>
+                                    {% else %}
+                                    <!-- finalize link -->
+                                    <td>
+                                        <a class="finalize-task" data-id="{{ loop.index0 }}" href="">Finalize</a>
+                                    </td>
+                                    {% endif %}
+                                    <!-- delete btn -->
+                                    <td class="ps-4">
+                                        <a class="rm-task" data-id="{{ loop.index0 }}" href="">
+                                            <i class="bi bi-trash3 fs-4 text-danger"></i>
+                                        </a>
+                                    </td>
+                                    <!-- restart btn -->
+                                    <td class="ps-4">
+                                        <a class="restart-task" data-id="{{ loop.index0 }}" href="">
+                                            <i class="bi bi-arrow-repeat fs-4 text-warning"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-5">
+
+                    <div class="row">
+
+                        <div class="row">
+                            <h3 class="fs-3 text-center">Add task </h3>
+                        </div>
+                        <div class="mb-3">
+                            <input type="task" name="name" class="form-control" id="task_input"
+                                placeholder="Task title">
+                        </div>
+
+                        <button id="add_task-btn" type="submit"
+                            class="btn btn-primary d-flex align-items-center justify-content-center">
+                            Add <i class="bi bi-patch-check fs-4 ms-2"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="row my-4"></div>
+
+                    <div class="row">
+                        <button id="shutdown-btn"
+                            class="btn btn-warning d-flex align-items-center justify-content-center">
+                            Close app <i class="bi bi-x-octagon fs-5 ms-2"></i>
+                        </button>
+                    </div>
 
                 </div>
 
