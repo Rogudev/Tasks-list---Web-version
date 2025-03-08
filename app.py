@@ -7,7 +7,7 @@ import signal
 
 app = Flask(__name__)
 
-database_path = 'db.json'
+database_path = '.db.json'
 app_port = 5588
 
 # Function to load from JSON
@@ -15,6 +15,8 @@ def load_tasks_list():
     try:
         with open(database_path, 'r') as file:
             tasks = json.load(file)
+            tasks.sort(key=lambda x: x['finalized'], reverse=False)
+
     except FileNotFoundError:
         tasks = []
     return tasks
@@ -32,14 +34,15 @@ def index():
 
 # Add a new project
 @app.route('/add_task', methods=['POST'])
-def agregar():
+def add():
     # get the name from JSON
     data = request.json
     name = data.get('name')
+    desc = data.get('desc')
 
     # load list and append the new task
     tasks = load_tasks_list()
-    tasks.append({'title': name, 'finalized': False})
+    tasks.append({'title': name, 'finalized': False, 'description': desc})
 
     # save list again
     save_tasks_list(tasks)
@@ -76,15 +79,19 @@ def delete_task():
     return jsonify({"message": "Task deleted correctly", "status": 200})  # send response
 
 # Delete a task
-@app.route('/restart_task', methods=['POST'])
-def restart_task():
+@app.route('/update_task', methods=['POST'])
+def update_task():
     # get the id from JSON
     data = request.json
     task_id = data.get('id')
+    task_name = data.get('name')
+    task_desc = data.get('desc')
 
     # load list and modify the task using the id
     tasks = load_tasks_list()
     tasks[task_id]['finalized'] = False
+    tasks[task_id]['title'] = task_name
+    tasks[task_id]['description'] = task_desc
 
     # save and return
     save_tasks_list(tasks)

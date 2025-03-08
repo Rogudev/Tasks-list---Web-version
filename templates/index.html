@@ -7,21 +7,20 @@
     <title>ToDo List</title>
 
     <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Bootstrap icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.styles.css') }}">
 
     <!-- Custom js -->
-    <script src="static/script.js"></script>
+    <script src="{{ url_for('static', filename='js/custom.script.js') }}"></script>
 </head>
 
 
@@ -46,53 +45,61 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <table class="table align-middle">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th class="text-center">Done</th>
-                                    <th class="text-center">Delete</th>
-                                    <th class="text-center">Restart</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for task in tasks %}
-                                <tr>
-                                    <th scope="row">{{ loop.index0 + 1}}</th>
-                                    <td>{{ task.title }}</td>
+                    <div class="row mt-4">
+                        
 
-                                    {% if task.finalized %}
-                                    <!-- done btn -->
-                                    <td class="text-center">
-                                        <i class="bi bi-check2-square fs-4 text-success"></i>
-                                    </td>
-                                    {% else %}
-                                    <!-- finalize link -->
-                                    <td class="text-center">
-                                        <a class="finalize-task" data-id="{{ loop.index0 }}" href="">
-                                            <i class="bi bi-square fs-5 text-primary"></i>
-                                        </a>
-                                    </td>
-                                    {% endif %}
-                                    <!-- delete btn -->
-                                    <td class="text-center"> 
-                                        <a class="rm-task" data-id="{{ loop.index0 }}" href="">
-                                            <i class="bi bi-trash3 fs-4 text-danger"></i>
-                                        </a>
-                                    </td>
-                                    <!-- restart btn -->
-                                    <td class="text-center">
-                                        <a class="restart-task" data-id="{{ loop.index0 }}" href="">
-                                            <i class="bi bi-arrow-repeat fs-4 text-warning"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
+                        <div id="table_content" class="row m-0 p-0">
+                            {% for task in tasks %}
+                            <div id="table_titles" class="row text-center">
+                                <div class="col-2 fw-bold">#</div>
+                                <div class="col-4 fw-bold">Name</div>
+                                <div class="col-2 fw-bold">Done</div>
+                                <div class="col-2 fw-bold">Delete</div>
+                                <div class="col-2 fw-bold">Update</div>
+                            </div>
+                            <div class="col-12 row text-center d-flex align-items-center">
+                                <div class="col-2 fw-bold">{{ loop.index0 + 1 if not task.finalized else ''}}</div>
+                                <div class="col-4">
+                                    <textarea class="form-control m-0 p-0 text-center taskAdjustHeight {{ 'text-success' if task.finalized else 'text-danger' }}" data-id="Name{{ loop.index0 }}">{{ task.title }}</textarea>
 
-                            </tbody>
-                        </table>
+                                </div>
+
+                                {% if task.finalized %}
+                                <!-- done btn -->
+                                <div class="col-2">
+                                    <i class="bi bi-check2-square fs-4 text-success"></i>
+                                </div>
+                                {% else %}
+                                <!-- finalize link -->
+                                <div class="col-2">
+                                    <a class="finalize-task" data-id="{{ loop.index0 }}" href="">
+                                        <i class="bi bi-square fs-5 text-warning"></i>
+                                    </a>
+                                </div>
+                                {% endif %}
+                                <!-- delete btn -->
+                                <div class="col-2">
+                                    <a class="rm-task" data-id="{{ loop.index0 }}" href="">
+                                        <i class="bi bi-trash3 fs-4 text-danger"></i>
+                                    </a>
+                                </div>
+                                <!-- update btn -->
+                                <div class="col-2">
+                                    <a class="update-task" data-id="{{ loop.index0 }}" href="">
+                                        <i class="bi bi-arrow-repeat fs-4 text-warning"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 row mt-3">
+                                <div class="col-2 fw-bold text-center d-flex align-items-center">Desc:</div>
+                                <div class="col-10 ">
+                                    <textarea class="text-justify form-control taskAdjustHeight text-primary-emphasis" data-id="Desc{{ loop.index0}}">{{ task.description }}</textarea>
+                                </div>
+                            </div>
+
+                            <hr class="mt-4 mb-3">
+                            {% endfor %}
+                        </div>
                     </div>
 
                 </div>
@@ -104,9 +111,12 @@
                         <div class="row">
                             <h3 class="fs-3 text-center">Add task </h3>
                         </div>
-                        <div class="mb-3">
-                            <input type="task" name="name" class="form-control" id="task_input"
+                        <div class="mb-3 mt-4">
+                            <input type="task" name="name" class="form-control mb-2" id="task_name_input"
                                 placeholder="Task title">
+
+                            <textarea name="desc" class="form-control" aria-label="With textarea" id="task_desc_input"
+                                placeholder="Task description"></textarea>
                         </div>
 
                         <button id="add_task-btn" type="submit"

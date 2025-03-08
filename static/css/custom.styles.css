@@ -1,0 +1,5 @@
+.taskAdjustHeight {
+    resize:none;
+    overflow: hidden;
+    text-align: justify;
+}
