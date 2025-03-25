@@ -10,7 +10,7 @@ import sys
 
 app = Flask(__name__)
 
-# Get the directory of the executable or script
+# get the directory of the executable or script
 def get_executable_directory():
     """Returns the directory where the executable is located or the script in development."""
     if getattr(sys, 'frozen', False):  # If running as a packaged app
@@ -23,7 +23,7 @@ def get_executable_directory():
 # get actual path
 base_path = get_executable_directory()
 
-# create the full path for database
+# create the full path for database and port file
 database_path = os.path.join(base_path, 'db.json')
 port_file_path = os.path.join(base_path, 'port.text')
 

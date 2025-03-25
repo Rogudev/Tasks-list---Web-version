@@ -68,7 +68,7 @@ This project is an updated version of [To do projects](https://github.com/Rodrig
   ./dist/app.py
 ```
 
-**NOTE**
+**NOTE:**
 Optionally, you can move the dist directory to anywhere you have your path exported and creates an script to execute the app from terminal.
 Example for the path _/home/bin/_
 ```bash
@@ -93,8 +93,16 @@ app = Flask(__name__)
 
 2. Create the paths for database file and the port file
 ```Python
-base_path = os.path.dirname(os.path.abspath(__file__))
+def get_executable_directory():
+    """Returns the directory where the executable is located or the script in development."""
+    if getattr(sys, 'frozen', False):  # If running as a packaged app
+        # When running as a bundled app, use _MEIPASS for the app's temporary directory
+        return os.path.dirname(sys.executable)
+    else:
+        # When running as a script, use the current directory of the script
+        return os.path.dirname(os.path.abspath(__file__))
 
+base_path = get_executable_directory()
 database_path = os.path.join(base_path, 'db.json')
 port_file_path = os.path.join(base_path, 'port.text')
 ```
@@ -243,7 +251,7 @@ def update_task():
 ```
 
 - Start and Stop app
-**Note**
+**Note:**
 The host is defined as 127.0.0.1 to only allow the user's connection
 ```Python
 def run_app():
