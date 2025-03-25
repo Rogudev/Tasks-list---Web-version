@@ -4,11 +4,66 @@ import webbrowser
 import threading
 import os
 import signal
+import random
+import socket
+import sys
 
 app = Flask(__name__)
 
-database_path = '.db.json'
-app_port = 5588
+# Get the directory of the executable or script
+def get_executable_directory():
+    """Returns the directory where the executable is located or the script in development."""
+    if getattr(sys, 'frozen', False):  # If running as a packaged app
+        # When running as a bundled app, use _MEIPASS for the app's temporary directory
+        return os.path.dirname(sys.executable)
+    else:
+        # When running as a script, use the current directory of the script
+        return os.path.dirname(os.path.abspath(__file__))
+
+# get actual path
+base_path = get_executable_directory()
+
+# create the full path for database
+database_path = os.path.join(base_path, 'db.json')
+port_file_path = os.path.join(base_path, 'port.text')
+
+def is_port_available(port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        # try to bind to the port
+        result = s.connect_ex(('127.0.0.1', port))
+        # if result == 0, port is in use
+        return result != 0
+
+def find_random_available_port():
+    while True:
+        # generate a random port between 5000 and 6000
+        random_port = random.randint(5000, 6000)
+        
+        # check availability
+        if is_port_available(random_port):
+            return random_port  #  if its free, return it, if not, re loop
+
+# read the portfile if exists, this prevents run multiple apps if the navtab is closed without closing the app
+def read_port_from_file():
+    """Reads the port from the file if it exists."""
+    if os.path.exists(port_file_path):
+        with open(port_file_path, 'r') as file:
+            port = file.read().strip()
+            return int(port) if port.isdigit() else None
+    return None
+
+# create the port file
+def write_port_to_file(port):
+    """Writes the port number to the file."""
+    os.makedirs(os.path.dirname(port_file_path), exist_ok=True)
+    with open(port_file_path, 'w') as file:
+        file.write(str(port))
+
+# del the port file
+def delete_port_file():
+    """Deletes the port file."""
+    if os.path.exists(port_file_path):
+        os.remove(port_file_path)
 
 # Function to load from JSON
 def load_tasks_list():
@@ -78,7 +133,7 @@ def delete_task():
     save_tasks_list(tasks)
     return jsonify({"message": "Task deleted correctly", "status": 200})  # send response
 
-# Delete a task
+# Update a task
 @app.route('/update_task', methods=['POST'])
 def update_task():
     # get the id from JSON
@@ -99,18 +154,30 @@ def update_task():
 
 # Function to run the Flask app
 def run_app():
-    app.run(debug=True, host='0.0.0.0', port=app_port, use_reloader=False)
+    app.run(debug=True, host='127.0.0.1', port=app_port, use_reloader=False)
 
 
 # Endpoint to shutdown the server
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
+    # del the port file     
+    delete_port_file()
     os.kill(os.getpid(), signal.SIGINT)
     return 'App has been stopped'
 
 
 if __name__ == '__main__':
-    # art the Flask app in a separate thread
+    # check if the app has been opened before and still running
+    app_port = read_port_from_file()
+
+    # check if not exists
+    if app_port is None:
+    # find the available port
+        app_port = find_random_available_port()
+        # create the file
+        write_port_to_file(app_port)
+    
+    # start the Flask app in a separate thread
     threading.Thread(target=run_app).start()
 
     # open the browser after the app starts

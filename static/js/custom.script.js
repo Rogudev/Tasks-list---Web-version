@@ -135,6 +135,3 @@ $(document).ready(function () {
     });
 
 });
-
-
-

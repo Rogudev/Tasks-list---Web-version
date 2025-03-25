@@ -4,5 +4,7 @@ dist
 include
 lib
 lib64
+__pycache__
 app.spec
-pyenv.cfg
+pyvenv.cfg
+.gitignore
