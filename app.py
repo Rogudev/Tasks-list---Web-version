@@ -14,10 +14,10 @@ app = Flask(__name__)
 def get_executable_directory():
     """Returns the directory where the executable is located or the script in development."""
     if getattr(sys, 'frozen', False):  # If running as a packaged app
-        # When running as a bundled app, use _MEIPASS for the app's temporary directory
+        # bundled app run, use _MEIPASS for the app's temporary directory
         return os.path.dirname(sys.executable)
     else:
-        # When running as a script, use the current directory of the script
+        # script run, use the current directory of the script
         return os.path.dirname(os.path.abspath(__file__))
 
 # get actual path
@@ -154,7 +154,7 @@ def update_task():
 
 # Function to run the Flask app
 def run_app():
-    app.run(debug=True, host='127.0.0.1', port=app_port, use_reloader=False)
+    app.run(debug=True, host='0.0.0.0', port=app_port, use_reloader=False)
 
 
 # Endpoint to shutdown the server
