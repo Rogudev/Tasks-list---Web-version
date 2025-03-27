@@ -31,34 +31,6 @@
             <div id="title_row" class="row">
                 <h1 class="fs-1 text-center">Tasks list</h1>
             </div>
-            <div id="note_row" class="row">
-                <h2 class="flash-text fs-1 text-center text-warning">WARNING:</h2>
-                <h3 class="text-danger text-center">THIS IS AN EXAMPLE, ALL NAMES AND DESCS WOULD BE RESETED EVERY 2 HOURS</h3>
-                <h3 class=" text-danger text-center">DOWNLOAD THE PROJECT FROM <a class="text-danger" href="https://github.com/Rogudev/Tasks-list---Web-version">GITHUB</a> AND DON'T FORGET DELETING THE DIV WITH "<i>#note_row</i>" ID FROM INDEX TEMPLATE AND "<i>reset_db</i>" FROM "<i>app.py</i>"</h3>
-                
-                <script>
-                    $(document).ready(function() {
-                        function toggleClassesWithFade() {
-                            $('.flash-text').each(function() {
-                                var $this = $(this);
-            
-                                // fade color
-                                $this.fadeOut(250, function() {
-                                    // toggle classes
-                                    if ($this.hasClass('text-warning') || $this.hasClass('text-white')) {
-                                        $this.toggleClass('text-white text-warning');
-                                    }
-                                    // Fade in the new color
-                                    $this.fadeIn(250);
-                                });
-                            });
-                        }
-            
-                        // toggle class every 750 ms
-                        setInterval(toggleClassesWithFade, 750);
-                    });
-                </script>
-            </div>
 
             <div class="row my-3"></div>
 
