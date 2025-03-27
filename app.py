@@ -154,7 +154,7 @@ def update_task():
 
 # Function to run the Flask app
 def run_app():
-    app.run(debug=True, host='0.0.0.0', port=app_port, use_reloader=False)
+    app.run(debug=True, host='127.0.0.1', port=app_port, use_reloader=False)
 
 
 # Endpoint to shutdown the server
